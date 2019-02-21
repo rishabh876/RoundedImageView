@@ -1,5 +1,5 @@
 # RoundedImageView
 
-![ScreenShot](https://imgur.com/a/UaAdvO0)
+![ScreenShot](https://i.imgur.com/hKu7Fhc.jpg)
 
 
