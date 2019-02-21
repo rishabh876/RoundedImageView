@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedImageView">
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="roundedCorners">
+            <flag name="topLeft" value="8" />
+            <flag name="topRight" value="4" />
+            <flag name="bottomLeft" value="2" />
+            <flag name="bottomRight" value="1" />
+            <flag name="top" value="12" />
+            <flag name="bottom" value="3" />
+            <flag name="all" value="15" />
+        </attr>
+    </declare-styleable>
+</resources>

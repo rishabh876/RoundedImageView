@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp"
+    tools:context=".MainActivity">
+
+    <com.rishabhharit.roundedimageview.RoundedImageView
+        android:id="@+id/circle_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        app:cornerRadius="1000dp"
+        app:layout_constraintBottom_toTopOf="@+id/rounded_iv_1"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintEnd_toStartOf="@+id/rounded_iv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:src="@tools:sample/avatars" />
+
+    <com.rishabhharit.roundedimageview.RoundedImageView
+        android:id="@+id/rounded_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/rounded_iv_1"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/circle_iv"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:roundedCorners="all"
+        tools:src="@tools:sample/avatars" />
+
+    <com.rishabhharit.roundedimageview.RoundedImageView
+        android:id="@+id/rounded_iv_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        app:cornerRadius="16dp"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/rounded_iv_2"
+        app:layout_constraintTop_toBottomOf="@+id/rounded_iv"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:roundedCorners="top"
+        tools:src="@tools:sample/avatars" />
+
+    <com.rishabhharit.roundedimageview.RoundedImageView
+        android:id="@+id/rounded_iv_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        app:cornerRadius="1000dp"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintEnd_toStartOf="@+id/rounded_iv_1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circle_iv"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:roundedCorners="topRight|bottomLeft"
+        tools:src="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
