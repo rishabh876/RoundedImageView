@@ -1,6 +1,6 @@
 # RoundedImageView
 
-<img src="https://i.imgur.com/hKu7Fhc.jpg" width="100" />
+<img src="https://i.imgur.com/hKu7Fhc.jpg" width="250" />
 
 
 
