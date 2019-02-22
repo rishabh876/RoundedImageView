@@ -6,9 +6,9 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 
 ### Limitations
 - Android Studio does not display rounded corner in Layout Preview 
-- Borders are not supported at the moment. Pull request are welcomed.
+- Borders are not supported at the moment. Pull requests are welcomed.
 - Shadows are not supported at the moment. 
-- RTL support is present.
+- RTL support is not present.
 
 ### How to use
 ``` 
