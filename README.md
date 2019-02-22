@@ -24,7 +24,7 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 To get Circular shape, all you need to do is set cornerRadius to a value that is higher than the width & height of your RoundedImageView
 `app:cornerRadius="1000dp"`
 
-### Variation
+### Customizations
 `app:roundedCorners` is pretty flexible. It supports all the following variations
 
 `app:roundedCorners="all|top|right|topLeft|topRight|bottomLeft|bottomRight"` (yes you can use multiple at the same time here separated by | )
