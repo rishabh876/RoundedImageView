@@ -9,6 +9,7 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 - Borders are not supported at the moment. Pull requests are welcomed.
 - Shadows are not supported at the moment. 
 - RTL support is not present.
+- Oval shape is not supported.
 
 ### How to use
 ``` 
