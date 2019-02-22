@@ -11,13 +11,12 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 - RTL support is not present.
 - Oval shape is not supported.
 
+### Gradle
+
+```compile 'com.rishabhharit.roundedimageview:roundedImageView:0.7.0'```
+
 ### How to use
 ``` 
-add this in your .gradle file
-
-compile 'com.rishabhharit.roundedimageview:roundedImageView:0.7.0'
-
-
  <com.rishabhharit.roundedimageview.RoundedImageView
     ...
     app:cornerRadius="8dp"
