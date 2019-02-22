@@ -35,3 +35,5 @@ Default is value for `app:cornerRadius` is `0dp`
 
 
 
+[![Medium](https://img.shields.io/badge/Medium-%40RishabhHarit-green.svg)](https://medium.com/@rishabhharit)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%40RishabhHarit-blue.svg)](https://www.linkedin.com/in/rishabhharit/)
