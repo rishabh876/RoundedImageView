@@ -1,5 +1,7 @@
 # RoundedImageView
 
+[ ![Download](https://api.bintray.com/packages/rishabh876/RoundedImageView/RoundedImageView/images/download.svg) ](https://bintray.com/rishabh876/RoundedImageView/RoundedImageView/_latestVersion)
+
 <img src="https://i.imgur.com/AYfiMIs.jpg" width="300" />
 
 A RoundedImageView library that supports rounding any corner or circular shape. It supports all kinds of drawable, bitmaps, resources just like a normal ImageView. All scale types are workng. RoundedImageView is extended from AppCompatImageView.
