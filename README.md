@@ -1,6 +1,8 @@
 # RoundedImageView
 
 [ ![Download](https://api.bintray.com/packages/rishabh876/RoundedImageView/RoundedImageView/images/download.svg) ](https://bintray.com/rishabh876/RoundedImageView/RoundedImageView/_latestVersion)
+[ ![Min API](https://img.shields.io/badge/%20Min%20API-14%2B-green.svg) ]()
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 <img src="https://i.imgur.com/AYfiMIs.jpg" width="300" />
 
