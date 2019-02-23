@@ -36,7 +36,7 @@ To get Circular shape, all you need to do is set cornerRadius to a value that is
 ### Customizations
 `app:roundedCorners` is pretty flexible. It supports all the following variations
 
-`app:roundedCorners="all|top|right|topLeft|topRight|bottomLeft|bottomRight"` (yes you can use multiple at the same time here separated by | )
+`app:roundedCorners="all|top|bottom|right|topLeft|topRight|bottomLeft|bottomRight"` (yes you can use multiple at the same time here separated by | )
 
 Default is value for `app:roundedCorners` is `all`
 
