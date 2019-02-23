@@ -1,4 +1,4 @@
-package com.rishabhharit.roundedimageview;
+package com.rishabhharit.roundedimageview
 
 import android.content.Context
 import android.graphics.*
