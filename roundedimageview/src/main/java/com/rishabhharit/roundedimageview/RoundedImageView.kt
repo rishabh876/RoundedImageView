@@ -11,7 +11,7 @@ class RoundedImageView : AppCompatImageView {
 
     private val ALL_ROUNDED_CORNERS_VALUE = 15 //base 2 = 1111
 
-    private var paint: Paint? = null
+    private lateinit var paint: Paint
     private lateinit var path: Path
     private var pathWidth: Int = 0
     private var pathHeight: Int = 0
@@ -113,11 +113,11 @@ class RoundedImageView : AppCompatImageView {
     }
 
     private fun setupPaint(): Paint {
-        paint!!.style = Paint.Style.FILL
-        paint!!.color = Color.TRANSPARENT
-        paint!!.isAntiAlias = true
-        paint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-        return paint!!
+        paint.style = Paint.Style.FILL
+        paint.color = Color.TRANSPARENT
+        paint.isAntiAlias = true
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        return paint
     }
 
     private fun setupPath() {
@@ -136,11 +136,11 @@ class RoundedImageView : AppCompatImageView {
     override fun onDraw(canvas: Canvas) {
         if (!isInEditMode) {
             val saveCount = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                canvas.saveLayer(0f, 0f, canvas.width.toFloat(), canvas.height.toFloat(), null)
+                canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null)
             else
-                canvas.saveLayer(0f, 0f, canvas.width.toFloat(), canvas.height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
+                canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
             super.onDraw(canvas)
-            canvas.drawPath(path, paint!!)
+            canvas.drawPath(path, paint)
             canvas.restoreToCount(saveCount)
         } else {
             super.onDraw(canvas)
