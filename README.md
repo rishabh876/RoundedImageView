@@ -1,5 +1,9 @@
 # RoundedImageView
 
+[ ![Download](https://api.bintray.com/packages/rishabh876/RoundedImageView/RoundedImageView/images/download.svg) ](https://bintray.com/rishabh876/RoundedImageView/RoundedImageView/_latestVersion)
+[ ![Min API](https://img.shields.io/badge/%20Min%20API-14%2B-green.svg) ]()
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 <img src="https://i.imgur.com/AYfiMIs.jpg" width="300" />
 
 A RoundedImageView library that supports rounding any corner or circular shape. It supports all kinds of drawable, bitmaps, resources just like a normal ImageView. All scale types are workng. RoundedImageView is extended from AppCompatImageView.
@@ -32,7 +36,7 @@ To get Circular shape, all you need to do is set cornerRadius to a value that is
 ### Customizations
 `app:roundedCorners` is pretty flexible. It supports all the following variations
 
-`app:roundedCorners="all|top|right|topLeft|topRight|bottomLeft|bottomRight"` (yes you can use multiple at the same time here separated by | )
+`app:roundedCorners="all|top|bottom|right|topLeft|topRight|bottomLeft|bottomRight"` (yes you can use multiple at the same time here separated by | )
 
 Default is value for `app:roundedCorners` is `all`
 
