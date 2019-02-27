@@ -4,8 +4,11 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewOutlineProvider
 import androidx.appcompat.widget.AppCompatImageView
 import java.util.*
+import kotlin.math.roundToInt
 
 class RoundedImageView : AppCompatImageView {
 
@@ -108,7 +111,6 @@ class RoundedImageView : AppCompatImageView {
             roundedTopLeft = corners.contains(Corner.TOP_LEFT)
             roundedTopRight = corners.contains(Corner.TOP_RIGHT)
             setupPath()
-            //setupBackgroundShadow()
         }
     }
 
@@ -124,12 +126,40 @@ class RoundedImageView : AppCompatImageView {
         val paddingStart = if (Build.VERSION.SDK_INT >= 17) getPaddingStart() else paddingLeft
         if (roundedTopLeft && roundedTopRight && roundedBottomRight && roundedBottomLeft
                 && (cornerRadius >= pathHeight / 2 && cornerRadius >= pathWidth / 2)) {
-            isCircle = false
+            isCircle = true
             path = circlePath(path, paddingStart + (pathWidth / 2.0f), paddingTop + (pathHeight / 2.0f), pathWidth, pathHeight)
         } else {
-            isCircle = true
+            isCircle = false
             path = roundedRect(path, paddingStart.toFloat(), paddingTop.toFloat(), pathWidth.toFloat(), pathHeight.toFloat(), cornerRadius.toFloat(), cornerRadius.toFloat(),
                     roundedTopLeft, roundedTopRight, roundedBottomRight, roundedBottomLeft)
+        }
+        setupShadowProvider()
+    }
+
+    private fun setupShadowProvider() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val viewOutlineProvider: ViewOutlineProvider
+            if (isCircle) {
+                viewOutlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: Outline) {
+                        val radius = Math.min(width, height) / 2.0f
+                        val left = width / 2 - radius
+                        val top = height / 2 - radius
+                        val right = width / 2 + radius
+                        val bottom = height / 2 + radius
+                        outline.setOval(left.roundToInt(), top.roundToInt(), right.roundToInt(), bottom.roundToInt())
+                    }
+                }
+            } else {
+                viewOutlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: Outline) {
+                        outline.setConvexPath(path)
+                    }
+                }
+            }
+
+            outlineProvider = viewOutlineProvider
+            invalidateOutline()
         }
     }
 
