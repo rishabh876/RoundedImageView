@@ -17,7 +17,7 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 
 ### Gradle
 
-```compile 'com.rishabhharit.roundedimageview:roundedImageView:0.7.0'```
+```implementation 'com.rishabhharit.roundedimageview:roundedImageView:0.7.0'```
 
 ### How to use
 ``` 
