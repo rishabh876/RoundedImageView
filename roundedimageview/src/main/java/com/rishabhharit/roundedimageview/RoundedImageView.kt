@@ -1,18 +1,19 @@
 package com.rishabhharit.roundedimageview
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.ViewCompat
 import java.util.*
 import kotlin.math.roundToInt
 
 class RoundedImageView : AppCompatImageView {
-
-    private val ALL_ROUNDED_CORNERS_VALUE = 15 //base 2 = 1111
 
     private lateinit var paint: Paint
     private lateinit var path: Path
@@ -25,15 +26,12 @@ class RoundedImageView : AppCompatImageView {
     private var roundedBottomLeft: Boolean = false
     private var roundedTopRight: Boolean = false
     private var roundedBottomRight: Boolean = false
+    private var reverseMask: Boolean = false
 
-    enum class Corner {
-        TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
-
-        companion object {
-            val ALL = EnumSet.allOf(Corner::class.java)
-            val TOP = EnumSet.of(TOP_LEFT, TOP_RIGHT)
-        }
-    }
+    private var _paddingTop = 0
+    private var _paddingStart = 0
+    private var _paddingEnd = 0
+    private var _paddingBottom = 0
 
     constructor(context: Context) : super(context) {
         init()
@@ -43,20 +41,51 @@ class RoundedImageView : AppCompatImageView {
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.RoundedImageView, 0, 0)
         val cornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadius, 0)
         val roundedCorners = a.getInt(R.styleable.RoundedImageView_roundedCorners, ALL_ROUNDED_CORNERS_VALUE)
+        reverseMask = a.getBoolean(R.styleable.RoundedImageView_reverseMask, reverseMask)
         a.recycle()
         init()
         setCornerRadius(cornerRadius)
         setRoundedCorners(roundedCorners)
+        fixPadding()
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.RoundedImageView, defStyleAttr, 0)
         val cornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadius, 0)
         val roundedCorners = a.getInt(R.styleable.RoundedImageView_roundedCorners, ALL_ROUNDED_CORNERS_VALUE)
+        reverseMask = a.getBoolean(R.styleable.RoundedImageView_reverseMask, reverseMask)
         a.recycle()
         init()
         setCornerRadius(cornerRadius)
         setRoundedCorners(roundedCorners)
+        fixPadding()
+    }
+
+    private fun copyPadding() {
+        _paddingTop = paddingTop
+        _paddingStart = ViewCompat.getPaddingStart(this)
+        _paddingEnd = ViewCompat.getPaddingEnd(this)
+        _paddingBottom = paddingBottom
+    }
+
+    private fun fixPadding() {
+        if (reverseMask) {
+            if (ViewCompat.getPaddingStart(this) != 0
+                    || ViewCompat.getPaddingEnd(this) != 0
+                    || paddingTop != 0
+                    || paddingBottom != 0) {
+                copyPadding()
+                ViewCompat.setPaddingRelative(this, 0, 0, 0, 0)
+            }
+        } else {
+            if (ViewCompat.getPaddingStart(this) != _paddingStart
+                    || ViewCompat.getPaddingEnd(this) != _paddingEnd
+                    || paddingTop != _paddingTop
+                    || paddingBottom != _paddingBottom) {
+                copyPadding()
+                ViewCompat.setPaddingRelative(this, _paddingStart, _paddingTop, _paddingEnd, _paddingBottom)
+            }
+        }
     }
 
     private fun setRoundedCorners(roundedCorners: Int) {
@@ -79,11 +108,12 @@ class RoundedImageView : AppCompatImageView {
 
     override fun onSizeChanged(newWidth: Int, newHeight: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(newWidth, newHeight, oldWidth, oldHeight)
-        val paddingStart = if (Build.VERSION.SDK_INT >= 17) getPaddingStart() else paddingLeft
-        val paddingEnd = if (Build.VERSION.SDK_INT >= 17) getPaddingEnd() else paddingRight
-        if (pathWidth != newWidth || pathHeight != newHeight) {
-            pathWidth = newWidth - (paddingStart + paddingEnd)
-            pathHeight = newHeight - (paddingTop + paddingBottom)
+        val _newWidth = newWidth - (_paddingStart + _paddingEnd)
+        val _newHeight = newHeight - (_paddingTop + _paddingBottom)
+
+        if (pathWidth != _newWidth || pathHeight != _newHeight) {
+            pathWidth = _newWidth
+            pathHeight = _newHeight
             setupPath()
         }
     }
@@ -94,6 +124,18 @@ class RoundedImageView : AppCompatImageView {
     fun setCornerRadius(cornerRadius: Int) {
         if (this.cornerRadius != cornerRadius) {
             this.cornerRadius = cornerRadius
+            setupPath()
+        }
+    }
+
+    /**
+     * Clips the inside, instead of the outside of the ImageView
+     * @param reverseMask default is false
+     */
+    fun setReverseMask(reverseMask: Boolean) {
+        if (this.reverseMask != reverseMask) {
+            this.reverseMask = reverseMask
+            fixPadding()
             setupPath()
         }
     }
@@ -123,44 +165,68 @@ class RoundedImageView : AppCompatImageView {
     }
 
     private fun setupPath() {
-        val paddingStart = if (Build.VERSION.SDK_INT >= 17) getPaddingStart() else paddingLeft
         if (roundedTopLeft && roundedTopRight && roundedBottomRight && roundedBottomLeft
                 && (cornerRadius >= pathHeight / 2 && cornerRadius >= pathWidth / 2)) {
             isCircle = true
-            path = circlePath(path, paddingStart + (pathWidth / 2.0f), paddingTop + (pathHeight / 2.0f), pathWidth, pathHeight)
+            path = circlePath(path, _paddingStart + (pathWidth / 2.0f), _paddingTop + (pathHeight / 2.0f), pathWidth, pathHeight, reverseMask)
         } else {
             isCircle = false
-            path = roundedRect(path, paddingStart.toFloat(), paddingTop.toFloat(), pathWidth.toFloat(), pathHeight.toFloat(), cornerRadius.toFloat(), cornerRadius.toFloat(),
-                    roundedTopLeft, roundedTopRight, roundedBottomRight, roundedBottomLeft)
+            path = roundedRect(path,
+                    left = _paddingStart.toFloat(),
+                    top = _paddingTop.toFloat(),
+                    right = _paddingStart + pathWidth.toFloat(),
+                    bottom = _paddingTop + pathHeight.toFloat(),
+                    rx = cornerRadius.toFloat(),
+                    ry = cornerRadius.toFloat(),
+                    tl = roundedTopLeft,
+                    tr = roundedTopRight,
+                    br = roundedBottomRight,
+                    bl = roundedBottomLeft,
+                    reverseMask = reverseMask)
         }
-        setupShadowProvider()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            outlineProvider = ViewOutlineProvider.BACKGROUND
     }
 
-    private fun setupShadowProvider() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val viewOutlineProvider: ViewOutlineProvider
-            if (isCircle) {
-                viewOutlineProvider = object : ViewOutlineProvider() {
-                    override fun getOutline(view: View, outline: Outline) {
-                        val radius = Math.min(width, height) / 2.0f
-                        val left = width / 2 - radius
-                        val top = height / 2 - radius
-                        val right = width / 2 + radius
-                        val bottom = height / 2 + radius
-                        outline.setOval(left.roundToInt(), top.roundToInt(), right.roundToInt(), bottom.roundToInt())
-                    }
-                }
-            } else {
-                viewOutlineProvider = object : ViewOutlineProvider() {
-                    override fun getOutline(view: View, outline: Outline) {
-                        outline.setConvexPath(path)
-                    }
-                }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    inner class CircularOutlineProvider : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            val radius = Math.min(pathWidth, pathHeight) / 2.0
+            val left = (width / 2.0) - radius
+            val top = (height / 2.0) - radius
+            val right = (width / 2.0) + radius
+            val bottom = (height / 2.0) + radius
+
+            outline.setOval(Math.ceil(left).roundToInt(),
+                    Math.ceil(top).roundToInt(),
+                    Math.ceil(right).roundToInt(),
+                    Math.ceil(bottom).roundToInt())
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    inner class RoundedRectangleOutlineProvider : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            outline.setConvexPath(path)
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun setOutlineProvider(provider: ViewOutlineProvider?) {
+        if (provider == ViewOutlineProvider.BACKGROUND
+                || provider is CircularOutlineProvider
+                || provider is RoundedRectangleOutlineProvider) {
+
+            val viewOutlineProvider: ViewOutlineProvider?
+            when {
+                reverseMask -> viewOutlineProvider = null
+                isCircle -> viewOutlineProvider = CircularOutlineProvider()
+                else -> viewOutlineProvider = RoundedRectangleOutlineProvider()
             }
 
-            outlineProvider = viewOutlineProvider
-            invalidateOutline()
-        }
+            super.setOutlineProvider(viewOutlineProvider)
+        } else
+            super.setOutlineProvider(provider)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -177,19 +243,42 @@ class RoundedImageView : AppCompatImageView {
         }
     }
 
+    override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
+        super.setPaddingRelative(start, top, end, bottom)
+        fixPadding()
+    }
+
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        super.setPadding(left, top, right, bottom)
+        fixPadding()
+    }
+
     companion object {
 
-        fun circlePath(path: Path, x: Float, y: Float, viewWidth: Int, viewHeight: Int): Path {
+        enum class Corner {
+            TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
+
+            companion object {
+                val ALL = EnumSet.allOf(Corner::class.java)
+                val TOP = EnumSet.of(TOP_LEFT, TOP_RIGHT)
+            }
+        }
+
+        private val ALL_ROUNDED_CORNERS_VALUE = 15 //base 2 = 1111
+
+        fun circlePath(path: Path, x: Float, y: Float, viewWidth: Int, viewHeight: Int, reverseMask: Boolean): Path {
             path.reset()
             val radius = Math.min(viewWidth, viewHeight) / 2.0f
             path.addCircle(x, y, radius, Path.Direction.CCW)
+            path.fillType = if (reverseMask) Path.FillType.EVEN_ODD else Path.FillType.INVERSE_EVEN_ODD
             return path
         }
 
         fun roundedRect(path: Path?,
                         left: Float, top: Float, right: Float, bottom: Float,
                         rx: Float, ry: Float,
-                        tl: Boolean, tr: Boolean, br: Boolean, bl: Boolean): Path {
+                        tl: Boolean, tr: Boolean, br: Boolean, bl: Boolean,
+                        reverseMask: Boolean): Path {
             var rx = rx
             var ry = ry
             path!!.reset()
@@ -243,9 +332,9 @@ class RoundedImageView : AppCompatImageView {
 
             path.rLineTo(0f, -heightMinusCorners)
 
-            path.close()//Given close, last lineto can be removed.
+            path.close() //Given close, last lineto can be removed.
 
-            path.fillType = Path.FillType.INVERSE_EVEN_ODD
+            path.fillType = if (!reverseMask) Path.FillType.INVERSE_EVEN_ODD else Path.FillType.EVEN_ODD
             return path
         }
     }

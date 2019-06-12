@@ -35,5 +35,17 @@ class MainActivity : AppCompatActivity() {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 //.placeholder(ColorDrawable(Color.LTGRAY))
                 .into(rounded_iv_2)
+
+        Glide.with(this)
+                .load("https://source.unsplash.com/random/400x400/?v=5")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //.placeholder(ColorDrawable(Color.LTGRAY))
+                .into(rounded_iv_4)
+
+        Glide.with(this)
+                .load("https://source.unsplash.com/random/400x400/?v=6")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //.placeholder(ColorDrawable(Color.LTGRAY))
+                .into(rounded_iv_5)
     }
 }

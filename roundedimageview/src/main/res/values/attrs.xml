@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="RoundedImageView">
         <attr name="cornerRadius" format="dimension" />
+        <attr name="reverseMask" format="boolean" />
         <attr name="roundedCorners">
             <flag name="topLeft" value="8" />
             <flag name="topRight" value="4" />
