@@ -4,7 +4,7 @@
 [ ![Min API](https://img.shields.io/badge/%20Min%20API-14%2B-green.svg) ]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<img src="https://i.imgur.com/AYfiMIs.jpg" width="300" />
+<img src="https://i.imgur.com/4aUpaGM.jpg" width="300" />
 
 A RoundedImageView library that supports rounding any corner or circular shape. It supports all kinds of drawable, bitmaps, resources just like a normal ImageView. All scale types are working. RoundedImageView is extended from AppCompatImageView.
 
@@ -17,7 +17,7 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 
 ### Gradle
 
-```implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.7.1'```
+```implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.1'```
 
 ### How to use
 ``` 
@@ -38,9 +38,15 @@ To get Circular shape, all you need to do is set cornerRadius to a value that is
 
 `app:roundedCorners="all|top|bottom|right|topLeft|topRight|bottomLeft|bottomRight"` (yes you can use multiple at the same time here separated by | )
 
+`app:reverseMask="true/false"` This attribute can be used to achieve transparency inside the shape instead of outside the given shape. Padding area is also a part of outside region in this case. 
+
+**Note**: Shadows don;t work when `reverseMask` is `true`.
+
 Default is value for `app:roundedCorners` is `all`
 
 Default is value for `app:cornerRadius` is `0dp`
+
+Default is value for `app:reverseMask` is `false`
 
 
 
