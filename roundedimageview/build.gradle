@@ -17,7 +17,7 @@ ext {
     siteUrl = 'https://rishabh876.github.io/RoundedImageView/'
     gitUrl = 'https://github.com/rishabh876/RoundedImageView.git'
 
-    libraryVersion = '0.7.1'
+    libraryVersion = '0.8.1'
 
     developerId = 'rishabh876'
     developerName = 'Rishabh Harit'
