@@ -1,7 +1,5 @@
 package com.rishabhharit
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -17,25 +15,37 @@ class MainActivity : AppCompatActivity() {
         Glide.with(this)
                 .load("https://source.unsplash.com/random/400x400/?v=1")
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(ColorDrawable(Color.LTGRAY))
+                //.placeholder(ColorDrawable(Color.LTGRAY))
                 .into(circle_iv)
 
         Glide.with(this)
                 .load("https://source.unsplash.com/random/400x400/?v=2")
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(ColorDrawable(Color.LTGRAY))
+                //.placeholder(ColorDrawable(Color.LTGRAY))
                 .into(rounded_iv)
 
         Glide.with(this)
                 .load("https://source.unsplash.com/random/400x400/?v=3")
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(ColorDrawable(Color.LTGRAY))
+                //.placeholder(ColorDrawable(Color.LTGRAY))
                 .into(rounded_iv_1)
 
         Glide.with(this)
                 .load("https://source.unsplash.com/random/400x400/?v=4")
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(ColorDrawable(Color.LTGRAY))
+                //.placeholder(ColorDrawable(Color.LTGRAY))
                 .into(rounded_iv_2)
+
+        Glide.with(this)
+                .load("https://source.unsplash.com/random/400x400/?v=5")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //.placeholder(ColorDrawable(Color.LTGRAY))
+                .into(rounded_iv_4)
+
+        Glide.with(this)
+                .load("https://source.unsplash.com/random/400x400/?v=6")
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //.placeholder(ColorDrawable(Color.LTGRAY))
+                .into(rounded_iv_5)
     }
 }
