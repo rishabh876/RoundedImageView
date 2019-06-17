@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.appcompat.widget.AppCompatImageView
@@ -207,7 +206,11 @@ class RoundedImageView : AppCompatImageView {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     inner class RoundedRectangleOutlineProvider : ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
-            outline.setConvexPath(path)
+            try {
+                outline.setConvexPath(path)
+            } catch (iae: IllegalArgumentException) {
+                outline.setRoundRect(_paddingStart, paddingTop, pathWidth + _paddingStart, paddingTop + pathHeight, cornerRadius.toFloat())
+            }
         }
     }
 
