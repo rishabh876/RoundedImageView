@@ -17,7 +17,7 @@ ext {
     siteUrl = 'https://rishabh876.github.io/RoundedImageView/'
     gitUrl = 'https://github.com/rishabh876/RoundedImageView.git'
 
-    libraryVersion = '0.8.2'
+    libraryVersion = '0.8.3'
 
     developerId = 'rishabh876'
     developerName = 'Rishabh Harit'
@@ -34,8 +34,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.8.2"
+        versionCode 4
+        versionName "0.8.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

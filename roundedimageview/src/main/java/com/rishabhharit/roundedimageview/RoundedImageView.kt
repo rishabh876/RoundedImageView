@@ -183,8 +183,16 @@ class RoundedImageView : AppCompatImageView {
                     bl = roundedBottomLeft,
                     reverseMask = reverseMask)
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            outlineProvider = ViewOutlineProvider.BACKGROUND
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (outlineProvider == ViewOutlineProvider.BACKGROUND
+                    || outlineProvider is CircularOutlineProvider
+                    || outlineProvider is RoundedRectangleOutlineProvider)
+                outlineProvider = ViewOutlineProvider.BACKGROUND
+
+            if (isInEditMode && !reverseMask) {
+                clipToOutline = true
+            }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -209,7 +217,9 @@ class RoundedImageView : AppCompatImageView {
             try {
                 outline.setConvexPath(path)
             } catch (iae: IllegalArgumentException) {
-                outline.setRoundRect(_paddingStart, paddingTop, pathWidth + _paddingStart, paddingTop + pathHeight, cornerRadius.toFloat())
+                if (roundedTopLeft && roundedBottomLeft && roundedBottomRight && roundedTopRight)
+                    outline.setRoundRect(_paddingStart, paddingTop, pathWidth + _paddingStart, paddingTop + pathHeight, cornerRadius.toFloat())
+                else outline.setEmpty()
             }
         }
     }
