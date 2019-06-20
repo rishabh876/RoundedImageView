@@ -142,3 +142,4 @@ bintray {
         }
     }
 }
+//./gradlew clean build bintrayUpload
