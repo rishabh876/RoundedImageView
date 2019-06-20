@@ -3,6 +3,8 @@ package com.rishabhharit.roundedimageview
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
@@ -31,6 +33,7 @@ class RoundedImageView : AppCompatImageView {
     private var _paddingStart = 0
     private var _paddingEnd = 0
     private var _paddingBottom = 0
+    private var isImageDirty = true
 
     constructor(context: Context) : super(context) {
         init()
@@ -91,6 +94,7 @@ class RoundedImageView : AppCompatImageView {
     }
 
     private fun init() {
+        isDrawingCacheEnabled = true
         paint = Paint()
         path = Path()
         setupPaint()
@@ -178,6 +182,7 @@ class RoundedImageView : AppCompatImageView {
     }
 
     private fun setupPath() {
+        isImageDirty = true
         if (roundedTopLeft && roundedTopRight && roundedBottomRight && roundedBottomLeft
                 && (cornerRadius >= pathHeight / 2 && cornerRadius >= pathWidth / 2)) {
             isCircle = true
@@ -256,15 +261,97 @@ class RoundedImageView : AppCompatImageView {
             super.setOutlineProvider(provider)
     }
 
+
+    override fun setImageBitmap(bm: Bitmap?) {
+        isImageDirty = true
+        super.setImageBitmap(bm)
+    }
+
+    override fun setImageDrawable(drawable: Drawable?) {
+        isImageDirty = true
+        super.setImageDrawable(drawable)
+    }
+
+    override fun setImageResource(resId: Int) {
+        isImageDirty = true
+        super.setImageResource(resId)
+    }
+
+    override fun setImageIcon(icon: Icon?) {
+        isImageDirty = true
+        super.setImageIcon(icon)
+    }
+
+    override fun setVisibility(visibility: Int) {
+        isImageDirty = true
+        super.setVisibility(visibility)
+    }
+
+    override fun onSetAlpha(alpha: Int): Boolean {
+        isImageDirty = true
+        return super.onSetAlpha(alpha)
+    }
+
+    override fun setBackground(background: Drawable?) {
+        isImageDirty = true
+        super.setBackground(background)
+    }
+
+    override fun setBackgroundColor(color: Int) {
+        isImageDirty = true
+        super.setBackgroundColor(color)
+    }
+
+    override fun setBackgroundResource(resId: Int) {
+        isImageDirty = true
+        super.setBackgroundResource(resId)
+    }
+
+    override fun setBackgroundDrawable(background: Drawable?) {
+        isImageDirty = true
+        super.setBackgroundDrawable(background)
+    }
+
+    override fun onDetachedFromWindow() {
+        isImageDirty = true
+        super.onDetachedFromWindow()
+    }
+
+    override fun onStartTemporaryDetach() {
+        isImageDirty = true
+        super.onStartTemporaryDetach()
+    }
+
+    override fun invalidate() {
+        isImageDirty = true
+        super.invalidate()
+    }
+
+    override fun requestLayout() {
+        isImageDirty = true
+        super.requestLayout()
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        isImageDirty = true
+        super.onLayout(changed, left, top, right, bottom)
+    }
+
     override fun onDraw(canvas: Canvas) {
         if (!isInEditMode) {
-            val saveCount = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null)
-            else
-                canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
-            super.onDraw(canvas)
-            canvas.drawPath(path, paint)
-            canvas.restoreToCount(saveCount)
+            if (isImageDirty || drawingCache == null) {
+                val saveCount = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null)
+                else
+                    canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
+                super.onDraw(canvas)
+                canvas.drawPath(path, paint)
+                canvas.restoreToCount(saveCount)
+                isImageDirty = false
+                buildDrawingCache()
+            } else {
+                canvas.drawBitmap(drawingCache, 0.0f, 0.0f, null)
+            }
         } else {
             super.onDraw(canvas)
         }
