@@ -34,6 +34,7 @@ class RoundedImageView : AppCompatImageView {
 
     constructor(context: Context) : super(context) {
         init()
+        setupPath()
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
@@ -43,9 +44,10 @@ class RoundedImageView : AppCompatImageView {
         reverseMask = a.getBoolean(R.styleable.RoundedImageView_reverseMask, reverseMask)
         a.recycle()
         init()
-        setCornerRadius(cornerRadius)
-        setRoundedCorners(roundedCorners)
+        setCornerRadiusInternal(cornerRadius)
+        setRoundedCornersInternal(roundedCorners)
         fixPadding()
+        setupPath()
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -55,9 +57,10 @@ class RoundedImageView : AppCompatImageView {
         reverseMask = a.getBoolean(R.styleable.RoundedImageView_reverseMask, reverseMask)
         a.recycle()
         init()
-        setCornerRadius(cornerRadius)
-        setRoundedCorners(roundedCorners)
+        setCornerRadiusInternal(cornerRadius)
+        setRoundedCornersInternal(roundedCorners)
         fixPadding()
+        setupPath()
     }
 
     private fun copyPadding() {
@@ -87,18 +90,6 @@ class RoundedImageView : AppCompatImageView {
         }
     }
 
-    private fun setRoundedCorners(roundedCorners: Int) {
-        val topLeft = 8 //1000 base 2
-        val topRight = 4 //0100 base 2
-        val bottomLeft = 2 //0010 base 2
-        val bottomRight = 1 //0001 base 2
-
-        roundedTopLeft = topLeft == roundedCorners and topLeft
-        roundedTopRight = topRight == roundedCorners and topRight
-        roundedBottomLeft = bottomLeft == roundedCorners and bottomLeft
-        roundedBottomRight = bottomRight == roundedCorners and bottomRight
-    }
-
     private fun init() {
         paint = Paint()
         path = Path()
@@ -121,10 +112,18 @@ class RoundedImageView : AppCompatImageView {
      * @param cornerRadius in pixels, default is 0
      */
     fun setCornerRadius(cornerRadius: Int) {
-        if (this.cornerRadius != cornerRadius) {
-            this.cornerRadius = cornerRadius
+        if (setCornerRadiusInternal(cornerRadius)) {
             setupPath()
         }
+    }
+
+
+    private fun setCornerRadiusInternal(cornerRadius: Int): Boolean {
+        if (this.cornerRadius != cornerRadius) {
+            this.cornerRadius = cornerRadius
+            return true
+        }
+        return false
     }
 
     /**
@@ -153,6 +152,21 @@ class RoundedImageView : AppCompatImageView {
             roundedTopRight = corners.contains(Corner.TOP_RIGHT)
             setupPath()
         }
+    }
+
+    private fun setRoundedCornersInternal(roundedCorners: Int) {
+        roundedTopLeft = TOP_LEFT == roundedCorners and TOP_LEFT
+        roundedTopRight = TOP_RIGHT == roundedCorners and TOP_RIGHT
+        roundedBottomLeft = BOTTOM_LEFT == roundedCorners and BOTTOM_LEFT
+        roundedBottomRight = BOTTOM_RIGHT == roundedCorners and BOTTOM_RIGHT
+    }
+
+    /**
+     * @param roundedCorners, where 1111 is All Corners {@see #Companion.ALL_ROUNDED_CORNERS_VALUE}
+     */
+    fun setRoundedCorners(roundedCorners: Int) {
+        setRoundedCornersInternal(roundedCorners)
+        setupPath()
     }
 
     private fun setupPaint(): Paint {
@@ -277,7 +291,11 @@ class RoundedImageView : AppCompatImageView {
             }
         }
 
-        private val ALL_ROUNDED_CORNERS_VALUE = 15 //base 2 = 1111
+        const val TOP_LEFT = 8 //1000 base 2
+        const val TOP_RIGHT = 4 //0100 base 2
+        const val BOTTOM_LEFT = 2 //0010 base 2
+        const val BOTTOM_RIGHT = 1 //0001 base 2
+        const val ALL_ROUNDED_CORNERS_VALUE = 15 //base 2 = 1111
 
         fun circlePath(path: Path, x: Float, y: Float, viewWidth: Int, viewHeight: Int, reverseMask: Boolean): Path {
             path.reset()
