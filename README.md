@@ -6,7 +6,12 @@
 
 <img src="https://i.imgur.com/4aUpaGM.jpg" width="300" />
 
-A RoundedImageView library that supports rounding any corner or circular shape. It supports all kinds of drawable, bitmaps, resources just like a normal ImageView. All scale types are working. RoundedImageView is extended from AppCompatImageView.
+A RoundedImageView library that supports rounding any corner or circular shape. RoundedImageView is extended from AppCompatImageView.
+
+### What Works?
+- It supports all kinds of drawable, bitmaps, resources just like a normal ImageView. 
+- All scale types are working
+- AdjustViewBounds also works
 
 ### Limitations
 - Android Studio does not display rounded corner in Layout Preview 
