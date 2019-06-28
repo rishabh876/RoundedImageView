@@ -10,11 +10,13 @@ A RoundedImageView library that supports rounding any corner or circular shape. 
 
 ### What Works?
 - It supports all kinds of drawable, bitmaps, resources just like a normal ImageView. 
+- Glide Works fine in my case, other libraries should also work fine.
 - All scale types are working
 - AdjustViewBounds also works
 
 ### Limitations
 - Android Studio does not display rounded corner in Layout Preview 
+- It is not the fastest library out there.
 - Borders are not supported at the moment. Pull requests are welcomed.
 - Oval shape is not supported.
 
